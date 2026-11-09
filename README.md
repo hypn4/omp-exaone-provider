@@ -1,8 +1,10 @@
-# omp-exaone-provider
+# K-EXAONE 2.5 for Oh My Pi (OMP)
 
 [English](README.md) | [한국어](README.ko.md)
 
-Use LG AI Research's **K-EXAONE 2.5** in [Oh My Pi](https://github.com/can1357/oh-my-pi), with streaming responses, reasoning, and tool calling.
+**omp-exaone-provider** is an open-source EXAONE model provider plugin for the [Oh My Pi (OMP)](https://github.com/can1357/oh-my-pi) coding agent. It connects to LG AI Research's **K-EXAONE 2.5** API and supports streaming responses, reasoning, and tool calling.
+
+[View on npm](https://www.npmjs.com/package/omp-exaone-provider) · [Latest GitHub release](https://github.com/hypn4/omp-exaone-provider/releases/latest)
 
 ## Install from GitHub (recommended)
 

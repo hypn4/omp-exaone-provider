@@ -1,7 +1,7 @@
 {
   "name": "omp-exaone-provider",
   "version": "0.1.2",
-  "description": "EXAONE provider for Oh My Pi, with native reasoning and tool calling",
+  "description": "K-EXAONE 2.5 model provider plugin for Oh My Pi (OMP), supporting streaming, reasoning, and tool calling",
   "type": "module",
   "license": "MIT",
   "repository": {
@@ -17,7 +17,7 @@
     "registry": "https://registry.npmjs.org/"
   },
   "packageManager": "bun@1.4.4",
-  "keywords": ["omp-plugin", "oh-my-pi", "exaone", "provider"],
+  "keywords": ["oh-my-pi", "omp", "omp-plugin", "exaone", "k-exaone", "k-exaone-2.5", "lg-ai-research", "llm", "coding-agent", "ai-agent", "model-provider", "typescript"],
   "files": ["src", "README.md", "README.ko.md", "LICENSE"],
   "omp": {
     "extensions": ["./src/index.ts"]

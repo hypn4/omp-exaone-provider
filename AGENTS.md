@@ -23,6 +23,7 @@ This repository is the public Oh My Pi (OMP) provider for EXAONE. Keep changes s
 - Always recommend `omp plugin install github:hypn4/omp-exaone-provider`; `omp plugin install npm:omp-exaone-provider` is an alternative.
 - Verify OMP command syntax against the official OMP docs and installed CLI behavior. Avoid claiming support for unverified features.
 - Keep public READMEs focused on users; maintainers' rules belong here, not in the package's public installation guide.
+- For discoverability, keep the GitHub About description and relevant repository topics aligned with `package.json` description/keywords and both READMEs. Use accurate, natural terminology rather than keyword stuffing. Link to the npm package and GitHub releases.
 
 ## Release procedure
 
