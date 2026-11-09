@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_call:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out the triggering commit
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "26"
+          package-manager-cache: false
+
+      - name: Install the pinned Bun version
+        run: npm install --global "$(node -p "require('./package.json').packageManager")"
+
+      - name: Install locked dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Check types and run tests
+        run: bun run check
+
+      - name: Check npm package contents
+        run: |
+          npm pack --dry-run --json --ignore-scripts > "${RUNNER_TEMP}/package-contents.json"
+          node --input-type=module <<'NODE'
+          import { readFileSync } from "node:fs";
+          const [{ files }] = JSON.parse(readFileSync(process.env.RUNNER_TEMP + "/package-contents.json", "utf8"));
+          const included = new Set(files.map(({ path }) => path));
+          for (const required of ["README.md", "README.ko.md", "LICENSE", "src/index.ts", "src/provider.ts"]) {
+            if (!included.has(required)) throw new Error("Missing npm package file: " + required);
+          }
+          NODE
