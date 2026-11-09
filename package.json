@@ -4,8 +4,21 @@
   "description": "EXAONE provider for Oh My Pi, with native reasoning and tool calling",
   "type": "module",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hypn4/omp-exaone-provider.git"
+  },
+  "homepage": "https://github.com/hypn4/omp-exaone-provider#readme",
+  "bugs": {
+    "url": "https://github.com/hypn4/omp-exaone-provider/issues"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "packageManager": "bun@1.4.4",
   "keywords": ["omp-plugin", "oh-my-pi", "exaone", "provider"],
-  "files": ["src", "README.md", "LICENSE"],
+  "files": ["src", "README.md", "README.ko", "LICENSE"],
   "omp": {
     "extensions": ["./src/index.ts"]
   },
