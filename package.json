@@ -26,7 +26,10 @@
     "check:types": "bun check --no-script -p tsconfig.json",
     "check": "bun run check:types && bun test",
     "test": "bun test",
-    "test:live": "bun run scripts/smoke.ts"
+    "test:live": "bun run scripts/smoke.ts",
+    "preversion": "bun run check",
+    "version": "bun install --lockfile-only && git add bun.lock",
+    "release:version": "bun pm version --message \"chore(release): v%s\""
   },
   "engines": {
     "bun": ">=1.4.4"

@@ -79,6 +79,17 @@ To run the optional live API checks, set `EXAONE_API_KEY` and run:
 bun run test:live
 ```
 
+### Releases
+
+From a clean checkout, create a version commit and tag with Bun, then push both:
+
+```sh
+bun run release:version patch
+git push --follow-tags
+```
+
+Use `minor`, `major`, or an explicit version in place of `patch`. The command runs checks and synchronizes the package version before creating the tag. Pushing a stable `vX.Y.Z` tag runs CI, publishes that version to npm through trusted publishing, and creates a GitHub Release. The tag and committed package version must match so GitHub and npm installations report the same version.
+
 ## License
 
 [MIT](LICENSE)

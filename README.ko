@@ -79,6 +79,17 @@ omp plugin link .
 bun run test:live
 ```
 
+### 릴리스
+
+변경 사항이 없는 작업 트리에서 Bun으로 버전 커밋과 태그를 만든 뒤 함께 push합니다.
+
+```sh
+bun run release:version patch
+git push --follow-tags
+```
+
+`patch` 대신 `minor`, `major` 또는 명시적인 버전을 사용할 수 있습니다. 이 명령은 검증을 실행하고 패키지 버전을 동기화한 뒤 태그를 생성합니다. 정식 `vX.Y.Z` 태그를 push하면 CI 검증, Trusted Publishing을 통한 npm 게시, GitHub Release 생성이 이어집니다. GitHub와 npm 설치본이 같은 버전을 표시하도록 태그와 커밋된 패키지 버전이 일치해야 합니다.
+
 ## 라이선스
 
 [MIT](LICENSE)

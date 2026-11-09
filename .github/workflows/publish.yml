@@ -4,12 +4,13 @@ name: Publish to npm
 # Create the package through an authenticated local publish, then configure
 # a GitHub trusted publisher for this repository, publish.yml, environment npm.
 # Enable Allow npm publish. The first OIDC publish must succeed within 2 days
-# of creating the trust configuration. Every release needs a new npm version.
+# of creating the trust configuration. After the local bootstrap, use a new
+# version for the first tag-driven release; npm versions cannot be republished.
 # https://docs.npmjs.com/trusted-publishers/
 
 on:
-  release:
-    types: [published]
+  push:
+    tags: ["v*"]
 
 permissions:
   contents: read
@@ -20,12 +21,11 @@ concurrency:
 
 jobs:
   check:
-    if: ${{ !github.event.release.prerelease }}
     uses: ./.github/workflows/ci.yml
 
   publish:
     needs: check
-    if: ${{ !github.event.release.prerelease && !github.event.repository.private }}
+    if: ${{ !github.event.repository.private }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     environment:
@@ -50,13 +50,14 @@ jobs:
 
       - name: Validate the release tag and repository
         env:
-          RELEASE_TAG: ${{ github.event.release.tag_name }}
+          RELEASE_TAG: ${{ github.ref_name }}
         run: |
           node --input-type=module <<'NODE'
           import { readFileSync } from "node:fs";
           const pkg = JSON.parse(readFileSync("package.json", "utf8"));
-          if (!/^\d+\.\d+\.\d+$/.test(pkg.version) || process.env.RELEASE_TAG !== `v${pkg.version}`) {
-            throw new Error("The stable release tag must match v<package.json version>.");
+          const match = /^v((0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*))$/.exec(process.env.RELEASE_TAG ?? "");
+          if (!match || pkg.version !== match[1]) {
+            throw new Error("Use bun run release:version to create a matching stable version commit and tag.");
           }
           const repository = `git+https://github.com/${process.env.GITHUB_REPOSITORY}.git`;
           if (pkg.repository?.url !== repository) {
@@ -68,3 +69,17 @@ jobs:
       # npm uses OIDC and automatically generates provenance for this public package.
       - name: Publish with trusted publishing
         run: npm publish --ignore-scripts
+
+  release:
+    needs: publish
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - name: Create the GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: gh release create "$RELEASE_TAG" --verify-tag --title "$RELEASE_TAG" --generate-notes
