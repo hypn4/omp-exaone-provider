@@ -1,0 +1,39 @@
+{
+  "name": "omp-exaone-provider",
+  "version": "0.1.0",
+  "description": "EXAONE provider for Oh My Pi, with native reasoning and tool calling",
+  "type": "module",
+  "license": "MIT",
+  "keywords": ["omp-plugin", "oh-my-pi", "exaone", "provider"],
+  "files": ["src", "README.md", "LICENSE"],
+  "omp": {
+    "extensions": ["./src/index.ts"]
+  },
+  "scripts": {
+    "check:types": "bun check --no-script -p tsconfig.json",
+    "check": "bun run check:types && bun test",
+    "test": "bun test",
+    "test:live": "bun run scripts/smoke.ts"
+  },
+  "engines": {
+    "bun": ">=1.4.4"
+  },
+  "peerDependencies": {
+    "@oh-my-pi/pi-ai": ">=18.18.3 <19",
+    "@oh-my-pi/pi-coding-agent": ">=18.18.3 <19"
+  },
+  "peerDependenciesMeta": {
+    "@oh-my-pi/pi-ai": {
+      "optional": true
+    },
+    "@oh-my-pi/pi-coding-agent": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@oh-my-pi/pi-ai": "18.18.3",
+    "@oh-my-pi/pi-catalog": "18.18.3",
+    "@oh-my-pi/pi-coding-agent": "18.18.3",
+    "@types/bun": "1.4.4"
+  }
+}
