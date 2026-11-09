@@ -1,6 +1,6 @@
 {
   "name": "omp-exaone-provider",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "EXAONE provider for Oh My Pi, with native reasoning and tool calling",
   "type": "module",
   "license": "MIT",
