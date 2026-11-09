@@ -101,6 +101,19 @@ bun run test:live
 
 정상 실행은 총 세 번의 요청으로 추론·텍스트 스트리밍, `add(17, 25)` 호출, 도구 결과를 받은 최종 `42` 답변을 확인합니다. 요청마다 최대 8,192 출력 토큰과 120초 제한을 적용합니다. 속도 제한 등 일시적 오류는 OMP가 재시도 헤더를 따르며 각 요청을 최대 세 번까지 시도합니다. 검증 도구는 파일이나 외부 서비스를 변경하지 않습니다.
 
+OMP CLI와 저장된 로그인 인증을 함께 확인하려면 프로젝트 디렉터리에서 다음 명령을 실행합니다.
+
+```bash
+omp --no-prewalk --no-extensions -e ./src/index.ts \
+  --no-skills --no-rules --no-context-files --no-lsp \
+  --no-tools --no-title --no-session \
+  --model exaone/k-exaone_v2.5 --thinking medium \
+  --system-prompt "Return the requested short answer." \
+  --max-time 30 -p "Reply with exactly EXAONE_OK."
+```
+
+`--no-prewalk`는 이 검증 실행의 자동 계획 후속 턴을 끕니다. Prewalk가 활성화된 환경에서는 정상 답변 뒤에도 추가 턴이 주입되어 도구를 끈 테스트가 계속될 수 있습니다. 2026-11-09 OMP 18.18.3에서 위 설정으로 `EXAONE_OK` 응답과 종료 코드 0을 확인했습니다.
+
 ## 현재 알려진 제한은 무엇인가요?
 
 EXAONE는 추론 사용량을 `usage.reasoning_tokens`에 반환하지만 OMP 18.18.3은 `completion_tokens_details.reasoning_tokens`를 읽습니다. 따라서 **전체 출력 토큰은 정상 집계되지만 추론 토큰의 별도 통계가 표시되지 않을 수 있습니다.** 추론은 이미 `completion_tokens`에 포함되므로 출력에 다시 더하지 않습니다.
