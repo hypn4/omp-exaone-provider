@@ -1,6 +1,6 @@
 {
   "name": "omp-exaone-provider",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "K-EXAONE 2.5 model provider plugin for Oh My Pi (OMP), supporting streaming, reasoning, and tool calling",
   "type": "module",
   "license": "MIT",
